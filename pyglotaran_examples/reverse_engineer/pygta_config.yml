@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=pygta_config.schema.json
+
+plotting:
+  general:
+    axis_label_override:
+      time: "Time (ps)"
+      spectral: "Wavelength (nm)"
+  plot_fitted_traces:
+    axis_label_override:
+      time: ""

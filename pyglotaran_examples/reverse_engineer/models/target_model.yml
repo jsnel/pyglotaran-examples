@@ -1,0 +1,57 @@
+default_megacomplex: decay
+
+dataset_groups:
+  default:
+    residual_function: variable_projection
+    link_clp: True
+
+dataset:
+  dataset1:
+    megacomplex: [PDI]
+    initial_concentration: input1
+    irf: irf1
+
+megacomplex:
+  PDI:
+    type: decay
+    k_matrix: [km1] # A megacomplex has one or more k-matrices
+
+k_matrix:
+  km1:
+    matrix: # rates ps^-1
+      (B, A): "rates.k1" #FC -> *S1    # 1.53
+      (C, B): "rates.k2" # S1* -> S1   # 0.103
+      (D, C): "rates.k3" # S1 -> EX    # ~0
+      (E, D): "rates.k4" # EX -> T     # 0.076/1000
+      (A, A): "rates.k5" # A -> GS     # 0.60
+      (B, B): "rates.k6" # B -> GS     # 0.19
+      (C, C): "rates.k7" # C -> GS     # 0.034
+      (D, D): "rates.k8" # D -> GS     # 5.14/1000
+      (E, E): "rates.k9" # A -> GS     # 0.18/1000
+      (D, B): "rates.k10" # *S1->EX     # 0.07
+      (E, C): "rates.k11" # S1 -> T     # 22.6/1000
+
+initial_concentration:
+  input1:
+    compartments: [A, B, C, D, E]
+    parameters:
+      [
+        inputs.A,
+        inputs.the_rest,
+        inputs.the_rest,
+        inputs.the_rest,
+        inputs.the_rest,
+      ]
+
+irf:
+  irf1:
+    type: gaussian
+    center: irf.center
+    width: irf.width
+
+
+clp_relations:
+  - source: C
+    target: B
+    parameter: rel.r1
+    interval: [[0, 1000]]
